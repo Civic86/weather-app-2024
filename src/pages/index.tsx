@@ -1,8 +1,8 @@
-import { Flex, Text, Box, Spacer } from '@chakra-ui/react';
+import { Flex, Text, Box, Spacer, InputGroup, InputLeftElement, Input, InputRightAddon, Button } from '@chakra-ui/react';
 import Image from 'next/image';
 import NavBar from './components/navBar';
 import Footer from './components/footer';
-import { SearchBar } from './components/searchBar';
+import { Search2Icon } from '@chakra-ui/icons';
 
 export default function Index(): JSX.Element {
   return (
@@ -15,10 +15,24 @@ export default function Index(): JSX.Element {
           </Box>
           <Spacer />
           <Box mt={10}>
-            <SearchBar/>
+            <InputGroup borderRadius={5} size="sm">
+              <InputLeftElement
+                pointerEvents="none"
+                children={<Search2Icon color="gray.600" />}
+              />
+              <Input type="text" placeholder="Search..." border="1px solid #949494" color="black" />
+              <InputRightAddon
+                p={0}
+                border="none"
+              >
+                <Button size="sm" borderLeftRadius={0} borderRightRadius={3.3} border="1px solid #949494">
+                  Search
+                </Button>
+              </InputRightAddon>
+            </InputGroup>
           </Box>
           <Box flex='1' mt={10}>
-            <Text color="black">Enter the location and find the city's current weather!</Text>
+            <Text color="black" textAlign="center">Enter the location and find the city's current weather!</Text>
           </Box>
         </Flex>
         <Box style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
