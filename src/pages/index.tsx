@@ -23,7 +23,7 @@ export default function Index(): JSX.Element {
       }
     } catch (error) {
       console.error("Error fetching weather data:", error);
-      alert("Weather data could not be fetched. Please try again."); // エラーハンドリング
+      alert("Weather data could not be fetched. Please try again.");
       return null;
     }
   };
