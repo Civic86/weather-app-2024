@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Box, Text, Flex, Input, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import NavBar from './components/navBar';
+import Footer from './components/footer';
 
 const About = () => {
   interface WeatherData {
@@ -89,53 +91,80 @@ const About = () => {
   }, [location]);
 
   return (
-    <Flex flexDirection="column" alignItems="center">
-      <Box p={4}>
-        {error && <Text color="red.500">{error}</Text>}
-        {CurrentWeather ? (
-          <>
-            <Text>Last Updated: {new Date(CurrentWeather.dt * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</Text>
-            <Text>{`Location: ${CurrentWeather.name}, ${CurrentWeather.sys.country}`}</Text>
-            <Text>{`Temperature: ${Math.ceil(CurrentWeather.main.temp)}°C`}</Text>
-            <Text>{`Weather: ${CurrentWeather.weather[0].main} (${CurrentWeather.weather[0].description})`}</Text>
-            {CurrentWeather && (
+    <>
+      <NavBar />
+      <Box minHeight="90vh" position="relative">
+        <Flex flexDirection="column" alignItems="center" justifyContent="center">
+          <Box p={4}>
+            {error && <Text color="red.500">{error}</Text>}
+            {CurrentWeather ? (
               <>
-                {["Thunderstorm", "Drizzle", "Rain", "Snow"].includes(CurrentWeather.weather[0].main) && (
-                  <Box>
-                    <Image src="/rain.png" alt="Rainy Weather" width={100} height={100} />
-                  </Box>
+                <Text>Last Updated: {new Date(CurrentWeather.dt * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</Text>
+                <Text>{`Location: ${CurrentWeather.name}, ${CurrentWeather.sys.country}`}</Text>
+                <Text>{`Temperature: ${Math.ceil(CurrentWeather.main.temp)}°C`}</Text>
+                <Text>{`Weather: ${CurrentWeather.weather[0].main} (${CurrentWeather.weather[0].description})`}</Text>
+                {CurrentWeather && (
+                  <>
+                    {["Thunderstorm", "Drizzle", "Rain", "Snow"].includes(CurrentWeather.weather[0].main) && (
+                      <Box>
+                        <Image src="/rain.png" alt="Rainy Weather" width={100} height={100} />
+                      </Box>
+                    )}
+                    {["Atmosphere", "Clear"].includes(CurrentWeather.weather[0].main) && (
+                      <Box>
+                        <Image src="/sun.png" alt="Sunny Weather" width={100} height={100} />
+                      </Box>
+                    )}
+                    {CurrentWeather.weather[0].main === "Clouds" && (
+                      <Box>
+                        <Image src="/cloud.png" alt="Cloudy Weather" width={100} height={100} />
+                      </Box>
+                    )}
+                  </>
                 )}
-                {["Atmosphere", "Clear"].includes(CurrentWeather.weather[0].main) && (
-                  <Box>
-                    <Image src="/sun.png" alt="Sunny Weather" width={100} height={100} />
-                  </Box>
-                )}
-                {CurrentWeather.weather[0].main === "Clouds" && (
-                  <Box>
-                    <Image src="/cloud.png" alt="Cloudy Weather" width={100} height={100} />
-                  </Box>
-                )}
+                <Text>{`Wind Speed: ${CurrentWeather.wind.speed} m/s`}</Text>
+                
+                {FiveDaysWeather ? (
+                  <Flex direction={["column", "row"]} gap="4" wrap="wrap" justify="center">
+                    {FiveDaysWeather.map((weather: WeatherData, index: number) => (
+                      <Box key={index} p={4} shadow="md" borderWidth="1px" width="200px" borderRadius={10}>
+                        <Text>{`Date: ${weather.date}`}</Text>
+                        <Text>{`Temperature: ${Math.ceil(weather.temp)}°C`}</Text>
+                        <Text>{`Weather: ${weather.main} (${weather.description})`}</Text>
+                        <Text>{`Wind Speed: ${weather.windSpeed} m/s`}</Text>
+                        {CurrentWeather && (
+                          <>
+                            {["Thunderstorm", "Drizzle", "Rain", "Snow"].includes(String(weather.main)) && (
+                              <Box>
+                                <Image src="/rain.png" alt="Rainy Weather" width={100} height={100} />
+                              </Box>
+                            )}
+                            {["Atmosphere", "Clear"].includes(String(weather.main)) && (
+                              <Box>
+                                <Image src="/sun.png" alt="Sunny Weather" width={100} height={100} />
+                              </Box>
+                            )}
+                            {["Clouds"].includes(String(weather.main)) && (
+                              <Box>
+                                <Image src="/cloud.png" alt="Cloudy Weather" width={100} height={100} />
+                              </Box>
+                            )}
+                          </>
+                        )}
+                      </Box>
+                    ))}
+                  </Flex>
+                ) : !error && <Text>Loading 5 days weather data...</Text>}
               </>
-            )}
-            <Text>{`Wind Speed: ${CurrentWeather.wind.speed} m/s`}</Text>
-            <Box p={4}>
-              {FiveDaysWeather ? (
-                <Flex direction="column" gap="4">
-                  {FiveDaysWeather.map((weather: WeatherData, index: number) => (
-                    <Box key={index} p={4} shadow="md" borderWidth="1px">
-                      <Text>{`Date: ${weather.date}`}</Text>
-                      <Text>{`Temperature: ${weather.temp}°C`}</Text>
-                      <Text>{`Weather: ${weather.main} (${weather.description})`}</Text>
-                      <Text>{`Wind Speed: ${weather.windSpeed} m/s`}</Text>
-                    </Box>
-                  ))}
-                </Flex>
-              ) : !error && <Text>Loading 5 days weather data...</Text>}
-            </Box>
-          </>
-        ) : !error && <Text>Loading weather data...</Text>}
+            ) : !error && <Text>Loading weather data...</Text>}
+          </Box>
+        </Flex>
+        <Box style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+          <Footer />
+        </Box>
       </Box>
-    </Flex>
+
+    </>
   );
 };
 
