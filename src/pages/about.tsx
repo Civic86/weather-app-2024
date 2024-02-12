@@ -99,30 +99,32 @@ const About = () => {
             {error && <Text color="red.500">{error}</Text>}
             {CurrentWeather ? (
               <>
-                <Text>Last Updated: {new Date(CurrentWeather.dt * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</Text>
-                <Text>{`Location: ${CurrentWeather.name}, ${CurrentWeather.sys.country}`}</Text>
-                <Text>{`Temperature: ${Math.ceil(CurrentWeather.main.temp)}°C`}</Text>
-                <Text>{`Weather: ${CurrentWeather.weather[0].main} (${CurrentWeather.weather[0].description})`}</Text>
-                {CurrentWeather && (
-                  <>
-                    {["Thunderstorm", "Drizzle", "Rain", "Snow"].includes(CurrentWeather.weather[0].main) && (
-                      <Box>
-                        <Image src="/rain.png" alt="Rainy Weather" width={100} height={100} />
-                      </Box>
-                    )}
-                    {["Atmosphere", "Clear"].includes(CurrentWeather.weather[0].main) && (
-                      <Box>
-                        <Image src="/sun.png" alt="Sunny Weather" width={100} height={100} />
-                      </Box>
-                    )}
-                    {CurrentWeather.weather[0].main === "Clouds" && (
-                      <Box>
-                        <Image src="/cloud.png" alt="Cloudy Weather" width={100} height={100} />
-                      </Box>
-                    )}
-                  </>
-                )}
-                <Text>{`Wind Speed: ${CurrentWeather.wind.speed} m/s`}</Text>
+                <Flex justifyContent="center" alignContent="center" mb={50}>
+                  <Text>Last Updated: {new Date(CurrentWeather.dt * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</Text>
+                  <Text>{`Location: ${CurrentWeather.name}, ${CurrentWeather.sys.country}`}</Text>
+                  <Text>{`Temperature: ${Math.ceil(CurrentWeather.main.temp)}°C`}</Text>
+                  <Text>{`Weather: ${CurrentWeather.weather[0].main} (${CurrentWeather.weather[0].description})`}</Text>
+                  {CurrentWeather && (
+                    <>
+                      {["Thunderstorm", "Drizzle", "Rain", "Snow"].includes(CurrentWeather.weather[0].main) && (
+                        <Box>
+                          <Image src="/rain.png" alt="Rainy Weather" width={100} height={100} />
+                        </Box>
+                      )}
+                      {["Atmosphere", "Clear"].includes(CurrentWeather.weather[0].main) && (
+                        <Box>
+                          <Image src="/sun.png" alt="Sunny Weather" width={100} height={100} />
+                        </Box>
+                      )}
+                      {CurrentWeather.weather[0].main === "Clouds" && (
+                        <Box>
+                          <Image src="/cloud.png" alt="Cloudy Weather" width={100} height={100} />
+                        </Box>
+                      )}
+                    </>
+                  )}
+                  <Text>{`Wind Speed: ${CurrentWeather.wind.speed} m/s`}</Text>
+                </Flex>
                 
                 {FiveDaysWeather ? (
                   <Flex direction={["column", "row"]} gap="4" wrap="wrap" justify="center">
